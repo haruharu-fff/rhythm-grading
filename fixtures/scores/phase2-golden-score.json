@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1.0",
+  "id": "phase2-golden-score",
+  "title": "Measured and unmeasured roll exercise",
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "updatedAt": "2026-09-02T00:00:00.000Z",
+  "lengthBeats": { "numerator": 8, "denominator": 1 },
+  "initialTempoBpm": 120,
+  "tempoChanges": [{ "beat": { "numerator": 4, "denominator": 1 }, "bpm": 90 }],
+  "timeSignatures": [
+    {
+      "beat": { "numerator": 0, "denominator": 1 },
+      "numerator": 4,
+      "denominator": 4
+    }
+  ],
+  "strokes": [
+    {
+      "id": "s5",
+      "beat": { "numerator": 5, "denominator": 1 },
+      "hand": "L",
+      "accent": false,
+      "targetDynamic": 0.8
+    },
+    {
+      "id": "s0",
+      "beat": { "numerator": 0, "denominator": 1 },
+      "hand": "R",
+      "accent": true,
+      "targetDynamic": 0.3
+    },
+    {
+      "id": "s2",
+      "beat": { "numerator": 2, "denominator": 1 },
+      "hand": "R",
+      "accent": false,
+      "targetDynamic": 0.5
+    },
+    {
+      "id": "s1",
+      "beat": { "numerator": 1, "denominator": 1 },
+      "hand": "L",
+      "accent": false,
+      "targetDynamic": 0.4
+    },
+    {
+      "id": "s4",
+      "beat": { "numerator": 4, "denominator": 1 },
+      "hand": "R",
+      "accent": true,
+      "targetDynamic": 0.7
+    }
+  ],
+  "regions": [
+    {
+      "id": "roll-free",
+      "type": "roll",
+      "mode": "unmeasured",
+      "startBeat": { "numerator": 6, "denominator": 1 },
+      "endBeat": { "numerator": 8, "denominator": 1 },
+      "targetDensityHz": 5
+    },
+    {
+      "id": "crescendo-0",
+      "type": "crescendo",
+      "startBeat": { "numerator": 0, "denominator": 1 },
+      "endBeat": { "numerator": 4, "denominator": 1 },
+      "curve": "linear",
+      "startLevel": 0.2,
+      "endLevel": 0.8
+    },
+    {
+      "id": "roll-measured",
+      "type": "roll",
+      "mode": "measured",
+      "startBeat": { "numerator": 2, "denominator": 1 },
+      "endBeat": { "numerator": 4, "denominator": 1 },
+      "subdivision": { "numerator": 1, "denominator": 2 }
+    }
+  ]
+}

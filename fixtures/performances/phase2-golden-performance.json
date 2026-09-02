@@ -1,0 +1,39 @@
+{
+  "sampleRate": 48000,
+  "offsetSec": 0.12,
+  "timeScale": 1.02,
+  "missTargetIds": ["stroke:s1"],
+  "localErrorSecByTargetId": {
+    "stroke:s0": -0.002,
+    "stroke:s2": 0.001,
+    "roll:roll-measured:5/2": -0.003,
+    "roll:roll-measured:3/1": 0.004,
+    "roll:roll-measured:7/2": -0.001,
+    "stroke:s4": 0.002,
+    "stroke:s5": -0.002
+  },
+  "relativeDbByTargetId": {
+    "stroke:s0": 4,
+    "stroke:s2": -2,
+    "roll:roll-measured:5/2": -1,
+    "roll:roll-measured:3/1": 0,
+    "roll:roll-measured:7/2": 1,
+    "stroke:s4": 6,
+    "stroke:s5": 2
+  },
+  "injectedStrokes": [
+    {
+      "id": "extra-outside",
+      "timeSec": 0.9,
+      "confidence": 0.95,
+      "flags": ["possible-double-trigger"]
+    },
+    { "id": "roll-free-0", "timeSec": 3.65, "attackStrengthDbfs": -20 },
+    { "id": "roll-free-1", "timeSec": 3.83, "attackStrengthDbfs": -19 },
+    { "id": "roll-free-2", "timeSec": 4.01, "attackStrengthDbfs": -18 },
+    { "id": "roll-free-3", "timeSec": 4.19, "attackStrengthDbfs": -17 },
+    { "id": "roll-free-4", "timeSec": 4.37, "attackStrengthDbfs": -16 },
+    { "id": "roll-free-5", "timeSec": 4.55, "attackStrengthDbfs": -15 },
+    { "id": "roll-free-6", "timeSec": 4.73, "attackStrengthDbfs": -14 }
+  ]
+}
