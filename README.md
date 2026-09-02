@@ -1,6 +1,6 @@
 # rhythm-grading
 
-打楽器の譜面を正解イベント列へ変換し、検出済み打点列との対応付け・基礎評価を行うためのアプリケーションです。現在は仕様書 v0.1 の **Phase 0〜2** を実装しています。
+打楽器の譜面を正解イベント列へ変換し、検出済み打点列との対応付け・評価・可視化を行うためのアプリケーションです。現在は仕様書 v0.1 の **Phase 0〜3** を実装しています。
 
 ## 必要環境
 
@@ -18,7 +18,16 @@ npm ci
 npm run dev
 ```
 
-開発サーバーが表示するURLをChromeまたはEdgeで開いてください。共有JSON fixtureを読み、validation済みの `TargetPerformance` を表示する最小画面が起動します。
+開発サーバーが表示するURLをChromeまたはEdgeで開いてください。Golden exerciseと4,000打のdense fixtureを切り替え、タイムラインを操作できます。
+
+### タイムライン操作
+
+- Canvas上のドラッグ、左右ボタン、左右矢印キー: 水平スクロール
+- `Ctrl` / `⌘` + ホイール、`+` / `-` キー、ズームボタン: ズーム
+- `Fit all` または `Home`: 全体表示
+- 打点・miss・extra・roll／dynamic区間をクリック: 選択して統計パネルに詳細表示
+- `Prev issue` / `Next issue`: miss／extraへ移動
+- `Overlay` / `Target` / `Actual`: 表示モード切替
 
 ## Web側のコマンド
 
@@ -56,6 +65,12 @@ poetry run pytest
 - unmeasured roll内の検出打点の排他的割当
 - click timing、actual tempo、internal rhythmの評価
 - Dynamics、accent、measured/unmeasured roll、dynamic regionの型・I/O・基礎統計
+- 高DPI対応Canvas timelineとbeat/subdivision grid
+- target／actual打点、timing対応線、early／late、miss／extraの非色依存表示
+- measured/unmeasured roll、crescendo/decrescendo区間表示
+- zoom、scroll、fit、打点・区間selection、miss／extraナビゲーション
+- timing、actual tempo、internal rhythm、dynamics、accent、rollの統計・selection inspector
+- 表示範囲cullingを検証する4,000打fixture
 - 共有JSON fixture、unit test、golden test、GitHub Actions CI
 
 主要設定は `apps/web/src/config/default-analysis-config.ts` に集約しています。未校正の閾値やペナルティは製品上の合否基準ではありません。
@@ -65,12 +80,13 @@ poetry run pytest
 - 実マイク入力、AudioWorklet、PCM collector
 - 本格的なオンセット検出とPython研究CLI
 - Web Worker/WASM
-- Canvas timeline、譜面エディタ、メトロノーム
+- 波形表示（PCM入力がまだないため、Canvasの波形layerはPhase 4以降で接続）
+- 譜面エディタ、メトロノーム
 - IndexedDB保存
 - E2Eと実録WAV fixture
 - 校正済みDynamics/accent/roll判定、100点換算
 
-次のPhase 3では、現在の純粋な `TargetPerformance + DetectedStroke[] -> StrokeAlignment -> PerformanceEvaluation` 境界をそのまま利用し、共有fixtureを表示するCanvas timelineから着手します。
+次のPhase 4では、Python onset PoCへ実WAVの読み込み、attack検出、評価CLIを追加し、現在の `DetectedStroke[]` JSON境界へ接続します。
 
 ## ディレクトリ
 
@@ -80,6 +96,8 @@ apps/web/src/score/        validation、Fraction、tempo map、compiler
 apps/web/src/matching/     DP alignment
 apps/web/src/evaluation/   純粋評価ロジック
 apps/web/src/fixtures/     人工演奏generator
+apps/web/src/ui/timeline/  viewport、scene、Canvas描画、操作
+apps/web/src/ui/session/   統計・selection inspector
 fixtures/                  TypeScript/Python共有JSON
 research/onset-poc/        Phase 4向けPythonパッケージ骨格
 docs/adr/                  仕様との差異・設計判断
