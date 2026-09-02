@@ -1,49 +1,99 @@
-import scoreFixture from "../../../fixtures/scores/phase2-golden-score.json";
-import { scoreCompiler, validateScoreDocument } from "./score";
+import { useCallback, useMemo, useState } from "react";
+import {
+  createDenseDemoScenario,
+  createGoldenDemoScenario,
+} from "./fixtures/demo-scenarios";
+import { StatisticsPanel } from "./ui/session/StatisticsPanel";
+import { TimelineCanvas, type TimelineSelection } from "./ui/timeline";
 import "./styles.css";
 
+type ScenarioId = "golden" | "dense";
+
 export function App() {
-  const validation = validateScoreDocument(scoreFixture);
-  if (!validation.valid) {
-    return (
-      <main>
-        <h1>Rhythm Grading</h1>
-        <p>Fixture validation failed.</p>
-        <pre>{JSON.stringify(validation.issues, null, 2)}</pre>
-      </main>
-    );
-  }
-  const compiled = scoreCompiler.compile(validation.value);
+  const [scenarioId, setScenarioId] = useState<ScenarioId>("golden");
+  const [selection, setSelection] = useState<TimelineSelection | null>(null);
+  const scenario = useMemo(
+    () =>
+      scenarioId === "golden"
+        ? createGoldenDemoScenario()
+        : createDenseDemoScenario(),
+    [scenarioId],
+  );
+  const changeSelection = useCallback((next: TimelineSelection | null) => {
+    setSelection(next);
+  }, []);
+
   return (
-    <main>
-      <p className="eyebrow">Phase 0–2 foundation</p>
-      <h1>{validation.value.title}</h1>
-      <p>
-        The shared JSON fixture was validated and compiled without browser audio
-        or UI-layer domain logic.
-      </p>
-      <dl>
+    <main className="app-shell">
+      <header className="app-header">
         <div>
-          <dt>Duration</dt>
-          <dd>{compiled.durationSec.toFixed(3)} s</dd>
+          <div className="brand-line">
+            <span className="brand-mark" aria-hidden="true">
+              RG
+            </span>
+            <p className="eyebrow">Rhythm grading · Phase 3</p>
+          </div>
+          <h1>{scenario.title}</h1>
+          <p className="app-description">{scenario.description}</p>
+        </div>
+        <label className="fixture-picker">
+          <span>Preview fixture</span>
+          <select
+            value={scenarioId}
+            onChange={(event) =>
+              setScenarioId(event.target.value as ScenarioId)
+            }
+          >
+            <option value="golden">Golden exercise</option>
+            <option value="dense">Dense · 4,000 strokes</option>
+          </select>
+        </label>
+      </header>
+
+      <section className="session-strip" aria-label="Session summary">
+        <div>
+          <span>Target</span>
+          <strong>
+            {scenario.data.target.strokes.length.toLocaleString()}
+          </strong>
         </div>
         <div>
-          <dt>Target strokes</dt>
-          <dd>{compiled.strokes.length}</dd>
+          <span>Detected</span>
+          <strong>{scenario.data.detected.length.toLocaleString()}</strong>
         </div>
         <div>
-          <dt>Target regions</dt>
-          <dd>{compiled.regions.length}</dd>
+          <span>Matched</span>
+          <strong>
+            {scenario.data.alignment.matches.length.toLocaleString()}
+          </strong>
+        </div>
+        <div className="session-miss">
+          <span>Miss</span>
+          <strong>{scenario.data.alignment.misses.length}</strong>
+        </div>
+        <div className="session-extra">
+          <span>Extra</span>
+          <strong>{scenario.data.alignment.extras.length}</strong>
         </div>
         <div>
-          <dt>Tempo segments</dt>
-          <dd>{compiled.tempoMap.length}</dd>
+          <span>Analysis</span>
+          <strong className="analysis-ready">Synthetic · ready</strong>
         </div>
-      </dl>
-      <details>
-        <summary>Compiled TargetPerformance</summary>
-        <pre>{JSON.stringify(compiled, null, 2)}</pre>
-      </details>
+      </section>
+
+      <div className="workspace-grid">
+        <TimelineCanvas
+          data={scenario.data}
+          selection={selection}
+          onSelectionChange={changeSelection}
+        />
+        <StatisticsPanel
+          data={scenario.data}
+          evaluation={scenario.evaluation}
+          selection={selection}
+          onSelectionChange={changeSelection}
+        />
+      </div>
     </main>
   );
 }
