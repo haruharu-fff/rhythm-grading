@@ -60,6 +60,9 @@ def _optional_float(value: object) -> float | None:
 
 def load_detected_strokes(values: list[dict[str, Any]], sample_rate: int) -> list[DetectedStroke]:
     strokes = [DetectedStroke.from_json(value, sample_rate) for value in values]
-    if any(left.sample_index > right.sample_index for left, right in zip(strokes, strokes[1:])):
+    if any(
+        left.sample_index > right.sample_index
+        for left, right in zip(strokes, strokes[1:], strict=False)
+    ):
         raise ValueError("Detected strokes must be ordered by sampleIndex")
     return strokes
