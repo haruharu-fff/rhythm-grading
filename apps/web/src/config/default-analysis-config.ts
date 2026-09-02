@@ -1,0 +1,43 @@
+import type { AnalysisConfig } from "../domain";
+
+export const DEFAULT_ANALYSIS_CONFIG: AnalysisConfig = {
+  version: "phase-2-baseline-1",
+  presetName: "practice-pad-default",
+  onset: {
+    highPassHz: 80,
+    envelopeWindowMs: 1.5,
+    noiseFloorWindowMs: 250,
+    thresholdOffsetDb: 12,
+    thresholdMadMultiplier: 6,
+    candidateMinDistanceMs: 18,
+    refinementLookbackMs: 12,
+    refinementRiseFraction: 0.1,
+    attackWindowMs: 8,
+    energyWindowMs: 30,
+    useSpectralFlux: false,
+    spectralFluxWeight: 0,
+    confidenceThreshold: 0.5,
+  },
+  matcher: {
+    timingSigmaMs: 30,
+    maxMatchDistanceMs: 140,
+    missPenalty: 4,
+    extraPenalty: 4,
+    confidencePenaltyWeight: 0.5,
+    useAmplitudeInMatching: false,
+    offsetSearchRangeMs: 5000,
+    offsetCandidateWindowSize: 8,
+    unmeasuredRollBoundaryMarginMs: 15,
+    affineRefinementEnabled: true,
+    minTimeScale: 0.8,
+    maxTimeScale: 1.2,
+  },
+  timing: { withinToleranceMs: 30 },
+  dynamics: {
+    metric: "relativeAttackDb",
+    minimumConfidence: 0.5,
+    accentNeighborCount: 2,
+  },
+  roll: { minimumStrokeCount: 2 },
+  quality: { maximumClippingSampleRatio: 0.001 },
+};

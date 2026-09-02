@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1.0",
+  "id": "all-grid-divisions",
+  "title": "4, 8, 12, 16, 24 and 32 division positions",
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "updatedAt": "2026-09-02T00:00:00.000Z",
+  "lengthBeats": { "numerator": 2, "denominator": 1 },
+  "initialTempoBpm": 60,
+  "tempoChanges": [],
+  "timeSignatures": [
+    {
+      "beat": { "numerator": 0, "denominator": 1 },
+      "numerator": 4,
+      "denominator": 4
+    }
+  ],
+  "strokes": [
+    {
+      "id": "quarter",
+      "beat": { "numerator": 1, "denominator": 1 },
+      "hand": "unspecified",
+      "accent": false
+    },
+    {
+      "id": "eighth",
+      "beat": { "numerator": 1, "denominator": 2 },
+      "hand": "unspecified",
+      "accent": false
+    },
+    {
+      "id": "twelfth",
+      "beat": { "numerator": 1, "denominator": 3 },
+      "hand": "unspecified",
+      "accent": false
+    },
+    {
+      "id": "sixteenth",
+      "beat": { "numerator": 1, "denominator": 4 },
+      "hand": "unspecified",
+      "accent": false
+    },
+    {
+      "id": "twenty-fourth",
+      "beat": { "numerator": 1, "denominator": 6 },
+      "hand": "unspecified",
+      "accent": false
+    },
+    {
+      "id": "thirty-second",
+      "beat": { "numerator": 1, "denominator": 8 },
+      "hand": "unspecified",
+      "accent": false
+    }
+  ],
+  "regions": []
+}

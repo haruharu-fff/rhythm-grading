@@ -1,0 +1,25 @@
+{
+  "matchedTargetIds": [
+    "stroke:s0",
+    "stroke:s2",
+    "roll:roll-measured:5/2",
+    "roll:roll-measured:3/1",
+    "roll:roll-measured:7/2",
+    "stroke:s4",
+    "stroke:s5"
+  ],
+  "missTargetIds": ["stroke:s1"],
+  "extraDetectedIds": ["extra-outside"],
+  "unmeasuredRollDetectedIds": [
+    "roll-free-0",
+    "roll-free-1",
+    "roll-free-2",
+    "roll-free-3",
+    "roll-free-4",
+    "roll-free-5",
+    "roll-free-6"
+  ],
+  "expectedOffsetSec": 0.12,
+  "expectedTimeScale": 1.02,
+  "tolerance": 0.005
+}

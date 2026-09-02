@@ -1,2 +1,17 @@
 Zone.Identifier
 *:Zone.Identifier*
+
+node_modules/
+dist/
+coverage/
+.vite/
+
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+.DS_Store
+*.log
