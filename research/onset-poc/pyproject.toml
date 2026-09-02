@@ -7,6 +7,13 @@ packages = [{ include = "onset_poc", from = "src" }]
 
 [tool.poetry.dependencies]
 python = "^3.12"
+matplotlib = "^3.10.0"
+numpy = "^2.2.0"
+scipy = "^1.15.0"
+soundfile = "^0.13.1"
+
+[tool.poetry.scripts]
+onset-poc = "onset_poc.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.17.1"

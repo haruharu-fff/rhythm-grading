@@ -1,0 +1,18 @@
+{
+  "version": "phase-4-time-domain-1",
+  "presetName": "practice-pad-baseline",
+  "highPassHz": 80,
+  "envelopeWindowMs": 1.5,
+  "noiseFloorWindowMs": 250,
+  "thresholdOffsetDb": 12,
+  "thresholdMadMultiplier": 6,
+  "candidateMinDistanceMs": 18,
+  "refinementLookbackMs": 12,
+  "refinementRiseFraction": 0.1,
+  "attackWindowMs": 8,
+  "energyWindowMs": 30,
+  "nearClippingThresholdDbfs": -0.25,
+  "useSpectralFlux": false,
+  "spectralFluxWeight": 0,
+  "confidenceThreshold": 0.5
+}

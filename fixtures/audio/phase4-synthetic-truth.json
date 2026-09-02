@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "1.0",
+  "audioPath": "phase4-synthetic.wav",
+  "sampleRate": 16000,
+  "frameCount": 38400,
+  "durationSec": 2.4,
+  "labels": {
+    "instrument": "synthetic-practice-pad",
+    "tempoBpm": 120,
+    "pattern": "single-and-close-double"
+  },
+  "events": [
+    {
+      "id": "truth-00",
+      "sampleIndex": 4000,
+      "timeSec": 0.25,
+      "labels": {
+        "strength": "weak"
+      }
+    },
+    {
+      "id": "truth-01",
+      "sampleIndex": 8800,
+      "timeSec": 0.55,
+      "labels": {
+        "strength": "medium"
+      }
+    },
+    {
+      "id": "truth-02",
+      "sampleIndex": 13600,
+      "timeSec": 0.85,
+      "labels": {
+        "strength": "strong"
+      }
+    },
+    {
+      "id": "truth-03",
+      "sampleIndex": 14160,
+      "timeSec": 0.885,
+      "labels": {
+        "strength": "medium"
+      }
+    },
+    {
+      "id": "truth-04",
+      "sampleIndex": 20800,
+      "timeSec": 1.3,
+      "labels": {
+        "strength": "medium"
+      }
+    },
+    {
+      "id": "truth-05",
+      "sampleIndex": 26400,
+      "timeSec": 1.65,
+      "labels": {
+        "strength": "strong"
+      }
+    },
+    {
+      "id": "truth-06",
+      "sampleIndex": 32000,
+      "timeSec": 2.0,
+      "labels": {
+        "strength": "medium"
+      }
+    }
+  ]
+}

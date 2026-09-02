@@ -14,6 +14,7 @@ export const DEFAULT_ANALYSIS_CONFIG: AnalysisConfig = {
     refinementRiseFraction: 0.1,
     attackWindowMs: 8,
     energyWindowMs: 30,
+    nearClippingThresholdDbfs: -0.25,
     useSpectralFlux: false,
     spectralFluxWeight: 0,
     confidenceThreshold: 0.5,
