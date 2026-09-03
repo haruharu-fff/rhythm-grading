@@ -248,8 +248,8 @@ export function TimelineCanvas({
     <section className="timeline-shell" aria-labelledby="timeline-title">
       <header className="timeline-header">
         <div>
-          <p className="section-kicker">Performance map</p>
-          <h2 id="timeline-title">Timeline</h2>
+          <p className="section-kicker">演奏マップ</p>
+          <h2 id="timeline-title">タイムライン</h2>
         </div>
         <div className="timeline-range" aria-live="polite">
           {formatTime(viewport.startSec)} — {formatTime(viewport.endSec)}
@@ -257,8 +257,8 @@ export function TimelineCanvas({
         </div>
       </header>
 
-      <div className="timeline-toolbar" aria-label="Timeline controls">
-        <div className="segmented-control" aria-label="Visible events">
+      <div className="timeline-toolbar" aria-label="タイムライン操作">
+        <div className="segmented-control" aria-label="表示する打点">
           {(["overlay", "target", "actual"] as const).map((value) => (
             <button
               type="button"
@@ -268,10 +268,10 @@ export function TimelineCanvas({
               onClick={() => setMode(value)}
             >
               {value === "overlay"
-                ? "Overlay"
+                ? "重ねて表示"
                 : value === "target"
-                  ? "Target"
-                  : "Actual"}
+                  ? "目標"
+                  : "実際"}
             </button>
           ))}
         </div>
@@ -283,37 +283,33 @@ export function TimelineCanvas({
             disabled={data.waveform === undefined}
             onClick={() => setShowWaveform((current) => !current)}
           >
-            Waveform
+            波形
           </button>
           <button
             type="button"
             onClick={() => pan(-0.2)}
-            aria-label="Scroll left"
+            aria-label="左へスクロール"
           >
             ←
           </button>
           <button
             type="button"
             onClick={() => pan(0.2)}
-            aria-label="Scroll right"
+            aria-label="右へスクロール"
           >
             →
           </button>
-          <button
-            type="button"
-            onClick={() => zoom(1 / 1.5)}
-            aria-label="Zoom out"
-          >
+          <button type="button" onClick={() => zoom(1 / 1.5)} aria-label="縮小">
             −
           </button>
-          <button type="button" onClick={() => zoom(1.5)} aria-label="Zoom in">
+          <button type="button" onClick={() => zoom(1.5)} aria-label="拡大">
             +
           </button>
           <button
             type="button"
             onClick={() => setViewport(fitViewport(bounds))}
           >
-            Fit all
+            全体表示
           </button>
         </div>
         <div className="toolbar-cluster">
@@ -322,14 +318,14 @@ export function TimelineCanvas({
             onClick={() => jumpIssue(-1)}
             disabled={issues.length === 0}
           >
-            Prev issue
+            前の問題
           </button>
           <button
             type="button"
             onClick={() => jumpIssue(1)}
             disabled={issues.length === 0}
           >
-            Next issue
+            次の問題
           </button>
         </div>
       </div>
@@ -338,7 +334,7 @@ export function TimelineCanvas({
         <canvas
           ref={canvasRef}
           className="timeline-canvas"
-          aria-label="Rhythm performance timeline. Drag or use arrow keys to scroll; hold Control while using the wheel to zoom."
+          aria-label="リズム演奏のタイムライン。ドラッグまたは左右キーでスクロールし、Controlキーを押しながらホイール操作すると拡大・縮小できます。"
           tabIndex={0}
           onKeyDown={onKeyDown}
           onPointerDown={onPointerDown}
@@ -350,30 +346,31 @@ export function TimelineCanvas({
       </div>
 
       <footer className="timeline-footer">
-        <div className="timeline-legend" aria-label="Timeline legend">
+        <div className="timeline-legend" aria-label="タイムラインの凡例">
           <span>
             <i className="legend-shape legend-target" />
-            Target
+            目標
           </span>
           <span>
             <i className="legend-shape legend-actual" />
-            Actual
+            実際
           </span>
           <span>
-            <i className="legend-shape legend-early" />E early
+            <i className="legend-shape legend-early" />E 早い
           </span>
           <span>
-            <i className="legend-shape legend-late" />L late
+            <i className="legend-shape legend-late" />L 遅い
           </span>
           <span>
-            <i className="legend-shape legend-miss" />× miss
+            <i className="legend-shape legend-miss" />× ミス
           </span>
           <span>
-            <i className="legend-shape legend-extra" />◇ extra
+            <i className="legend-shape legend-extra" />◇ 余分
           </span>
         </div>
         <p>
-          Drag to scroll · Ctrl/⌘ + wheel to zoom · click a mark for details
+          ドラッグでスクロール · Ctrl/⌘ + ホイールで拡大・縮小 ·
+          印をクリックして詳細表示
         </p>
       </footer>
     </section>

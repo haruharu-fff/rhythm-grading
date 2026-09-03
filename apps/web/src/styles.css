@@ -109,6 +109,46 @@ h2 {
   line-height: 1.55;
 }
 
+.score-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 0;
+}
+
+.score-facts > div {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 8px 11px;
+  border: 1px solid #cbd8d0;
+  border-radius: 9px;
+  background: rgb(250 251 249 / 78%);
+}
+
+.score-facts dt {
+  color: #5b7166;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.score-facts dd {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  color: #26372f;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.score-facts dd small {
+  color: #6d7b74;
+  font-size: 10px;
+  font-weight: 500;
+}
+
 .fixture-picker {
   display: grid;
   flex: 0 0 238px;

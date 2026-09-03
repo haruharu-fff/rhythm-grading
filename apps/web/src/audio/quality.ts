@@ -45,15 +45,15 @@ export function assessRecordingQuality(
 
 export const QUALITY_WARNING_MESSAGES: Readonly<Record<string, string>> = {
   "automatic-gain-control-not-disabled":
-    "Automatic gain control is active or unavailable; dynamics are reference-only.",
+    "自動ゲイン調整が有効、または状態を取得できないため、強弱の評価は参考値です。",
   "noise-suppression-not-disabled":
-    "Noise suppression is active or unavailable; weak strokes may be lost.",
+    "ノイズ抑制が有効、または状態を取得できないため、弱い打音を検出できない可能性があります。",
   "echo-cancellation-not-disabled":
-    "Echo cancellation is active or unavailable; use headphones for the click.",
+    "エコー除去が有効、または状態を取得できません。クリック音にはヘッドホンを使用してください。",
   "clipping-ratio-too-high":
-    "The input clipped too often. Move the microphone away or lower its gain.",
+    "入力音が頻繁にクリップしています。マイクを離すか、入力ゲインを下げてください。",
   "input-level-too-low":
-    "The recording level is very low. Move closer or raise the input gain.",
+    "録音レベルが低すぎます。マイクを近づけるか、入力ゲインを上げてください。",
   "mostly-low-confidence-detections":
-    "Most detected strokes are uncertain. Check microphone placement and noise.",
+    "検出した打音の多くが不確実です。マイクの位置と周囲の雑音を確認してください。",
 };

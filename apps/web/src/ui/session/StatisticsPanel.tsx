@@ -33,7 +33,31 @@ function barWidth(value: number | null): string {
 }
 
 function statusLabel(status: string): string {
-  return status === "ok" ? "Ready" : status.replaceAll("-", " ");
+  const labels: Record<string, string> = {
+    ok: "評価完了",
+    "insufficient-data": "データ不足",
+    "low-confidence": "信頼度低",
+    invalid: "評価不可",
+  };
+  return labels[status] ?? status;
+}
+
+function flagLabel(flag: string): string {
+  const labels: Record<string, string> = {
+    "near-clipping": "クリップ付近",
+    "weak-signal": "信号が弱い",
+    "possible-double-trigger": "二重検出の可能性",
+    "near-recording-boundary": "録音端付近",
+  };
+  return labels[flag] ?? flag;
+}
+
+function regionTypeLabel(type: string, mode?: string): string {
+  if (type === "roll")
+    return mode === "measured" ? "計測ロール" : "非計測ロール";
+  if (type === "crescendo") return "クレッシェンド";
+  if (type === "decrescendo") return "デクレッシェンド";
+  return type;
 }
 
 function SelectedDetail({ data, evaluation, selection }: StatisticsPanelProps) {
@@ -41,7 +65,9 @@ function SelectedDetail({ data, evaluation, selection }: StatisticsPanelProps) {
     return (
       <div className="selection-empty">
         <span className="selection-crosshair">＋</span>
-        <p>Select a target, actual stroke, miss, extra, or region.</p>
+        <p>
+          目標／実際の打点、ミス、余分な打点、または区間を選択してください。
+        </p>
       </div>
     );
   }
@@ -50,7 +76,7 @@ function SelectedDetail({ data, evaluation, selection }: StatisticsPanelProps) {
       (candidate) => candidate.id === selection.id,
     );
     if (stroke === undefined)
-      return <p>Selected target is outside this result.</p>;
+      return <p>選択した目標打点は現在の結果に含まれていません。</p>;
     const match = data.alignment.matches.find(
       (candidate) => candidate.targetStrokeId === stroke.id,
     );
@@ -70,33 +96,33 @@ function SelectedDetail({ data, evaluation, selection }: StatisticsPanelProps) {
             className={`status-dot ${missed ? "status-miss" : "status-target"}`}
           />
           <div>
-            <small>Target stroke</small>
+            <small>目標打点</small>
             <strong>{stroke.sourceStrokeId ?? stroke.id}</strong>
           </div>
         </div>
         <dl className="detail-grid">
           <div>
-            <dt>Beat</dt>
+            <dt>拍位置</dt>
             <dd>{fractionKey(stroke.beat)}</dd>
           </div>
           <div>
-            <dt>Target time</dt>
+            <dt>目標時刻</dt>
             <dd>{stroke.timeSec.toFixed(3)} s</dd>
           </div>
           <div>
-            <dt>Timing</dt>
+            <dt>タイミング</dt>
             <dd>
               {error === null
                 ? missed
-                  ? "MISS"
+                  ? "ミス"
                   : "—"
                 : signedMilliseconds(error)}
             </dd>
           </div>
           <div>
-            <dt>Hand / accent</dt>
+            <dt>手順／アクセント</dt>
             <dd>
-              {stroke.hand} / {stroke.accent ? "yes" : "no"}
+              {stroke.hand} / {stroke.accent ? "あり" : "なし"}
             </dd>
           </div>
         </dl>
@@ -108,7 +134,7 @@ function SelectedDetail({ data, evaluation, selection }: StatisticsPanelProps) {
       (candidate) => candidate.id === selection.id,
     );
     if (stroke === undefined)
-      return <p>Selected actual stroke is outside this result.</p>;
+      return <p>選択した実際の打点は現在の結果に含まれていません。</p>;
     const match = data.alignment.matches.find(
       (candidate) => candidate.detectedStrokeId === stroke.id,
     );
@@ -128,39 +154,41 @@ function SelectedDetail({ data, evaluation, selection }: StatisticsPanelProps) {
             className={`status-dot ${extra ? "status-extra" : "status-actual"}`}
           />
           <div>
-            <small>Actual stroke</small>
+            <small>実際の打点</small>
             <strong>{stroke.id}</strong>
           </div>
         </div>
         <dl className="detail-grid">
           <div>
-            <dt>Aligned time</dt>
+            <dt>補正後の時刻</dt>
             <dd>
               {(stroke.timeSec - data.alignment.estimatedOffsetSec).toFixed(3)}{" "}
               s
             </dd>
           </div>
           <div>
-            <dt>Timing</dt>
+            <dt>タイミング</dt>
             <dd>
               {extra
-                ? "EXTRA"
+                ? "余分"
                 : error === null
-                  ? "Roll stroke"
+                  ? "ロール打点"
                   : signedMilliseconds(error)}
             </dd>
           </div>
           <div>
-            <dt>Attack</dt>
+            <dt>アタック</dt>
             <dd>{stroke.attackStrengthDbfs.toFixed(1)} dBFS</dd>
           </div>
           <div>
-            <dt>Confidence</dt>
+            <dt>信頼度</dt>
             <dd>{percentage(stroke.confidence)}</dd>
           </div>
         </dl>
         {stroke.flags.length > 0 && (
-          <p className="detail-note">Flags: {stroke.flags.join(", ")}</p>
+          <p className="detail-note">
+            注意: {stroke.flags.map(flagLabel).join("、")}
+          </p>
         )}
       </div>
     );
@@ -169,7 +197,7 @@ function SelectedDetail({ data, evaluation, selection }: StatisticsPanelProps) {
     (candidate) => candidate.id === selection.id,
   );
   if (region === undefined)
-    return <p>Selected region is outside this result.</p>;
+    return <p>選択した区間は現在の結果に含まれていません。</p>;
   const roll = evaluation.rolls.find(
     (candidate) => candidate.regionId === region.id,
   );
@@ -181,50 +209,53 @@ function SelectedDetail({ data, evaluation, selection }: StatisticsPanelProps) {
       <div className="selection-heading">
         <span className="status-dot status-region" />
         <div>
-          <small>Region</small>
+          <small>区間</small>
           <strong>{region.sourceRegionId}</strong>
         </div>
       </div>
       <dl className="detail-grid">
         <div>
-          <dt>Type</dt>
+          <dt>種類</dt>
           <dd>
-            {region.type === "roll" ? `${region.mode} roll` : region.type}
+            {regionTypeLabel(
+              region.type,
+              region.type === "roll" ? region.mode : undefined,
+            )}
           </dd>
         </div>
         <div>
-          <dt>Range</dt>
+          <dt>範囲</dt>
           <dd>
             {region.startTimeSec.toFixed(2)}–{region.endTimeSec.toFixed(2)} s
           </dd>
         </div>
         {roll !== undefined && (
           <div>
-            <dt>Density</dt>
+            <dt>打点密度</dt>
             <dd>{roll.densityHz?.toFixed(2) ?? "—"} Hz</dd>
           </div>
         )}
         {roll !== undefined && (
           <div>
-            <dt>Max gap</dt>
+            <dt>最大間隔</dt>
             <dd>{milliseconds(roll.maximumGapSec)}</dd>
           </div>
         )}
         {dynamic !== undefined && (
           <div>
-            <dt>Trend</dt>
+            <dt>強弱の傾向</dt>
             <dd>
               {dynamic.directionCorrect === null
                 ? "—"
                 : dynamic.directionCorrect
-                  ? "Expected"
-                  : "Opposite"}
+                  ? "指定どおり"
+                  : "指定と逆"}
             </dd>
           </div>
         )}
         {dynamic !== undefined && (
           <div>
-            <dt>Spearman</dt>
+            <dt>Spearman相関</dt>
             <dd>{dynamic.spearmanCorrelation?.toFixed(2) ?? "—"}</dd>
           </div>
         )}
@@ -239,12 +270,12 @@ export function StatisticsPanel(props: StatisticsPanelProps) {
   const rhythm = evaluation.internalRhythm.residualStats;
   const tempo = evaluation.tempo.overallActualBpm;
   return (
-    <aside className="statistics-panel" aria-label="Performance statistics">
+    <aside className="statistics-panel" aria-label="演奏の統計">
       <section className="panel-section selection-panel">
         <div className="panel-title-row">
           <div>
-            <p className="section-kicker">Inspector</p>
-            <h2>Selection</h2>
+            <p className="section-kicker">詳細</p>
+            <h2>選択項目</h2>
           </div>
         </div>
         <SelectedDetail {...props} />
@@ -253,8 +284,8 @@ export function StatisticsPanel(props: StatisticsPanelProps) {
       <section className="panel-section">
         <div className="panel-title-row">
           <div>
-            <p className="section-kicker">Overview</p>
-            <h2>Timing</h2>
+            <p className="section-kicker">概要</p>
+            <h2>タイミング</h2>
           </div>
           <span className={`status-pill status-${evaluation.timing.status}`}>
             {statusLabel(evaluation.timing.status)}
@@ -262,60 +293,62 @@ export function StatisticsPanel(props: StatisticsPanelProps) {
         </div>
         <div className="metric-grid">
           <article>
-            <span>Click MAE</span>
+            <span>クリック基準 MAE</span>
             <strong>{milliseconds(timing?.meanAbsolute)}</strong>
-            <small>offset removed</small>
+            <small>開始ずれを除外</small>
           </article>
           <article>
-            <span>Internal MAE</span>
+            <span>内部リズム MAE</span>
             <strong>{milliseconds(rhythm?.meanAbsolute)}</strong>
-            <small>offset + trend removed</small>
+            <small>開始ずれ・テンポ傾向を除外</small>
           </article>
           <article>
-            <span>Actual tempo</span>
+            <span>実演テンポ</span>
             <strong>
-              {tempo === null ? "By segment" : `${tempo.toFixed(1)} BPM`}
+              {tempo === null ? "区間ごと" : `${tempo.toFixed(1)} BPM`}
             </strong>
-            <small>scale ×{data.alignment.estimatedTimeScale.toFixed(3)}</small>
+            <small>
+              時間倍率 ×{data.alignment.estimatedTimeScale.toFixed(3)}
+            </small>
           </article>
           <article>
-            <span>Within tolerance</span>
+            <span>許容範囲内</span>
             <strong>{percentage(evaluation.timing.withinToleranceRate)}</strong>
             <small>±{evaluation.timing.toleranceMs} ms</small>
           </article>
         </div>
-        <div className="timing-balance" aria-label="Early and late rates">
-          <span>Early {percentage(evaluation.timing.earlyRate)}</span>
+        <div className="timing-balance" aria-label="早い打点と遅い打点の割合">
+          <span>早い {percentage(evaluation.timing.earlyRate)}</span>
           <div>
             <i style={{ width: barWidth(evaluation.timing.earlyRate) }} />
             <b style={{ width: barWidth(evaluation.timing.lateRate) }} />
           </div>
-          <span>Late {percentage(evaluation.timing.lateRate)}</span>
+          <span>遅い {percentage(evaluation.timing.lateRate)}</span>
         </div>
       </section>
 
       <section className="panel-section compact-stats">
         <div className="panel-title-row">
           <div>
-            <p className="section-kicker">Detection</p>
-            <h2>Events</h2>
+            <p className="section-kicker">検出</p>
+            <h2>打点</h2>
           </div>
         </div>
         <dl>
           <div>
-            <dt>Matched</dt>
+            <dt>一致</dt>
             <dd>{data.alignment.matches.length}</dd>
           </div>
           <div>
-            <dt>Miss</dt>
+            <dt>ミス</dt>
             <dd className="metric-miss">{data.alignment.misses.length}</dd>
           </div>
           <div>
-            <dt>Extra</dt>
+            <dt>余分</dt>
             <dd className="metric-extra">{data.alignment.extras.length}</dd>
           </div>
           <div>
-            <dt>Start offset</dt>
+            <dt>開始ずれ</dt>
             <dd>{signedMilliseconds(data.alignment.estimatedOffsetSec)}</dd>
           </div>
         </dl>
@@ -324,8 +357,8 @@ export function StatisticsPanel(props: StatisticsPanelProps) {
       <section className="panel-section compact-stats">
         <div className="panel-title-row">
           <div>
-            <p className="section-kicker">Control</p>
-            <h2>Dynamics</h2>
+            <p className="section-kicker">コントロール</p>
+            <h2>強弱</h2>
           </div>
           <span className={`status-pill status-${evaluation.dynamics.status}`}>
             {statusLabel(evaluation.dynamics.status)}
@@ -333,7 +366,7 @@ export function StatisticsPanel(props: StatisticsPanelProps) {
         </div>
         <dl>
           <div>
-            <dt>Normal spread</dt>
+            <dt>通常打点のばらつき</dt>
             <dd>
               {decibels(
                 evaluation.dynamics.normalStrokeStats?.standardDeviation,
@@ -341,15 +374,15 @@ export function StatisticsPanel(props: StatisticsPanelProps) {
             </dd>
           </div>
           <div>
-            <dt>Accent median</dt>
+            <dt>アクセント差の中央値</dt>
             <dd>{decibels(evaluation.accents.medianContrastDb)}</dd>
           </div>
           <div>
-            <dt>Clipped excluded</dt>
+            <dt>クリップ除外数</dt>
             <dd>{evaluation.dynamics.excludedClippedCount}</dd>
           </div>
           <div>
-            <dt>Low confidence</dt>
+            <dt>低信頼度の除外数</dt>
             <dd>{evaluation.dynamics.excludedLowConfidenceCount}</dd>
           </div>
         </dl>
@@ -359,8 +392,8 @@ export function StatisticsPanel(props: StatisticsPanelProps) {
         <section className="panel-section roll-table-section">
           <div className="panel-title-row">
             <div>
-              <p className="section-kicker">Regions</p>
-              <h2>Rolls</h2>
+              <p className="section-kicker">区間</p>
+              <h2>ロール</h2>
             </div>
           </div>
           <div className="roll-table">
@@ -375,18 +408,18 @@ export function StatisticsPanel(props: StatisticsPanelProps) {
               >
                 <span>
                   <strong>{roll.regionId.replace("region:", "")}</strong>
-                  <small>{roll.mode}</small>
+                  <small>{roll.mode === "measured" ? "計測" : "非計測"}</small>
                 </span>
                 <span>
-                  <small>Density</small>
+                  <small>打点密度</small>
                   {roll.densityHz?.toFixed(2) ?? "—"} Hz
                 </span>
                 <span>
-                  <small>IOI CV</small>
+                  <small>打点間隔 CV</small>
                   {roll.ioiCv?.toFixed(3) ?? "—"}
                 </span>
                 <span>
-                  <small>Max gap</small>
+                  <small>最大間隔</small>
                   {milliseconds(roll.maximumGapSec)}
                 </span>
               </button>
