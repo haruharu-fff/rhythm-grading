@@ -169,6 +169,34 @@ export interface RecordingMetadata {
   startedAt: string;
 }
 
+export interface AudioSourceInfo {
+  sampleRate: number;
+  channelCount: number;
+  requestedConstraints: AudioConstraintSnapshot;
+  appliedSettings: AudioSettingSnapshot;
+}
+
+export interface PcmRecording {
+  samples: Float32Array;
+  metadata: RecordingMetadata;
+}
+
+export interface AudioSource {
+  prepare(): Promise<AudioSourceInfo>;
+  start(): Promise<void>;
+  stop(): Promise<PcmRecording>;
+  dispose(): Promise<void>;
+}
+
+export type RecordingState =
+  | "idle"
+  | "requesting-permission"
+  | "ready"
+  | "recording"
+  | "processing"
+  | "completed"
+  | "error";
+
 export interface MatcherConfig {
   timingSigmaMs: number;
   maxMatchDistanceMs: number;
@@ -412,6 +440,8 @@ export interface OnsetDetectorConfig {
 
 export interface QualityConfig {
   maximumClippingSampleRatio: number;
+  minimumInputRmsDbfs: number;
+  maximumLowConfidenceRate: number;
 }
 
 export interface AnalysisConfig {

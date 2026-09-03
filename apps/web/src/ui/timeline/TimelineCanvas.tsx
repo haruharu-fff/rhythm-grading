@@ -58,6 +58,7 @@ export function TimelineCanvas({
     fitViewport(bounds),
   );
   const [mode, setMode] = useState<TimelineDisplayMode>("overlay");
+  const [showWaveform, setShowWaveform] = useState(true);
   const [size, setSize] = useState({ width: 900, height: 286 });
 
   useEffect(() => {
@@ -78,8 +79,16 @@ export function TimelineCanvas({
   }, []);
 
   const scene = useMemo(
-    () => buildTimelineScene(data, viewport, size.width, size.height, mode),
-    [data, mode, size.height, size.width, viewport],
+    () =>
+      buildTimelineScene(
+        data,
+        viewport,
+        size.width,
+        size.height,
+        mode,
+        showWaveform,
+      ),
+    [data, mode, showWaveform, size.height, size.width, viewport],
   );
 
   useEffect(() => {
@@ -267,6 +276,15 @@ export function TimelineCanvas({
           ))}
         </div>
         <div className="toolbar-cluster">
+          <button
+            type="button"
+            className={showWaveform ? "is-active" : ""}
+            aria-pressed={showWaveform}
+            disabled={data.waveform === undefined}
+            onClick={() => setShowWaveform((current) => !current)}
+          >
+            Waveform
+          </button>
           <button
             type="button"
             onClick={() => pan(-0.2)}

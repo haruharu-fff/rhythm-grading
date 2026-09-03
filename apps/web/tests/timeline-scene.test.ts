@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { buildWaveformOverview } from "../src/audio";
 import {
   createDenseDemoScenario,
   createGoldenDemoScenario,
@@ -114,5 +115,24 @@ describe("timeline scene", () => {
     expect(scene.targets.length).toBeLessThan(30);
     expect(scene.detected.length).toBeLessThan(30);
     expect(scene.gridLines.length).toBeLessThan(100);
+  });
+
+  it("adds and hides the downsampled recording waveform", () => {
+    const scenario = createGoldenDemoScenario();
+    const data = {
+      ...scenario.data,
+      waveform: buildWaveformOverview(
+        Float32Array.of(0, 0.5, -0.5, 1, -1, 0),
+        10,
+        3,
+      ),
+    };
+    const viewport = fitViewport(timelineBounds(data));
+    expect(
+      buildTimelineScene(data, viewport, 900, 286, "overlay").waveform.length,
+    ).toBeGreaterThan(0);
+    expect(
+      buildTimelineScene(data, viewport, 900, 286, "overlay", false).waveform,
+    ).toEqual([]);
   });
 });

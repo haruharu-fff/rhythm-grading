@@ -144,6 +144,25 @@ function drawRegions(
   }
 }
 
+function drawWaveform(
+  context: CanvasRenderingContext2D,
+  scene: TimelineScene,
+): void {
+  if (scene.waveform.length === 0) return;
+  const centerY = 108;
+  const amplitude = 19;
+  context.beginPath();
+  context.strokeStyle = "#62736b";
+  context.globalAlpha = 0.6;
+  context.lineWidth = 1;
+  for (const bucket of scene.waveform) {
+    context.moveTo(bucket.x, centerY - bucket.maximum * amplitude);
+    context.lineTo(bucket.x, centerY - bucket.minimum * amplitude);
+  }
+  context.stroke();
+  context.globalAlpha = 1;
+}
+
 function drawMatches(
   context: CanvasRenderingContext2D,
   scene: TimelineScene,
@@ -321,6 +340,7 @@ export function drawTimeline(
   );
   context.clip();
   drawRegions(context, scene);
+  drawWaveform(context, scene);
   drawMatches(context, scene);
   drawTargets(context, scene);
   drawDetected(context, scene);
