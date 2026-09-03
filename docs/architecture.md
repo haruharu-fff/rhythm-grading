@@ -1,4 +1,4 @@
-# Phase 0–4 architecture
+# Phase 0–5 architecture
 
 ```text
 shared score JSON
@@ -24,27 +24,39 @@ PerformanceEvaluation + Timeline selection
 WAV -> Python baseline OnsetDetector -> DetectedStroke[]
 GroundTruth + DetectedStroke[] -> detection metrics
 Dataset + config grid -> stratified sweep CSV / experiment report
+
+getUserMedia -> MediaStreamAudioSourceNode -> AudioWorklet
+  -> transferable Float32 PCM chunks -> PcmRecording + RecordingMetadata
+
+PcmRecording
+  -> min/max waveform overview
+  -> transferable PCM -> offline Web Worker
+  -> pure TypeScript OnsetDetector -> DetectedStroke[]
+  -> Matcher -> Evaluator -> Timeline / quality warnings
 ```
 
 `domain` はデータ契約だけを所有し、React、DOM、Web Audio、永続化をimportしません。この制約はESLintでも検査します。`score`、`matching`、`evaluation` はブラウザ状態を参照しない純粋ロジックです。UIはこれらを呼び出せますが、逆向きの依存は禁止します。
 
-Phase 3のCanvasは次の概念layerを順に描画します。
+Phase 3以降のCanvasは次の概念layerを順に描画します。
 
 1. beat/subdivision grid
 2. roll/dynamic regions
-3. targetとactualを結ぶmatch線
-4. target strokes
-5. detected strokes、miss/extra表現
-6. selection
+3. downsample済みwaveform overview
+4. targetとactualを結ぶmatch線
+5. target strokes
+6. detected strokes、miss/extra表現
+7. selection
 
 viewport演算、表示範囲culling、scene生成、hit testはDOMから分離した純粋TypeScriptです。Canvasはdevice pixel ratioに合わせたbacking storeを持ち、ResizeObserverで表示幅へ追従します。数千打fixtureでは全データを保持したまま、現在のviewportと小さなoverscanに入るglyphだけを生成します。
 
-将来の境界は次のとおりです。
+Phase 5の音声経路では、AudioWorkletはPCMのmono化とchunk転送だけを担当し、解析を行いません。録音停止時に未送信chunkをflushしてackを返し、メイン側はack後にAudioNodeをdisconnectし、全MediaStream trackをstopしてAudioContextをcloseします。解析用WorkerはDomainと同じ `OnsetDetectorConfig` と `DetectedStroke[]` を境界にし、UI／Matcher／Evaluatorをimportしません。
 
-- Audio: PCM取得と `RecordingMetadata` の生成
-- DSP: PCMから `DetectedStroke[]` への変換
+今後も維持する境界は次のとおりです。
+
+- AudioSource: Browser／将来nativeを `prepare/start/stop/dispose` より下で差し替える
+- DSP: PCMから `DetectedStroke[]` へのpure TypeScript変換
 - Worker: DSPの実行場所だけを差し替え、Domain I/Oは維持
-- Timeline waveform layer: PCMまたはdownsample済みenvelopeをread-onlyで追加
+- Timeline waveform layer: raw PCMを保持せずmin/max overviewをread-onlyで受け取る
 - Storage: score/session snapshotをRepository interface経由で保存
 - Python PoC: 共有JSON契約へ出力し、Web側のMatcher/Evaluator fixtureと接続
 

@@ -13,6 +13,7 @@ import type {
   TimelineScene,
   TimelineSelection,
   TimelineViewport,
+  WaveformGlyph,
 } from "./types";
 import { timeToX, timelineLayout } from "./viewport";
 
@@ -147,6 +148,7 @@ export function buildTimelineScene(
   width: number,
   height: number,
   mode: TimelineDisplayMode,
+  showWaveform = true,
 ): TimelineScene {
   const layout = timelineLayout(width, height);
   const pixelsPerSecond =
@@ -243,6 +245,22 @@ export function buildTimelineScene(
               adjustedTime(match.detectedTimeSec) - match.targetTimeSec,
           }));
 
+  const waveform: WaveformGlyph[] = [];
+  if (showWaveform && data.waveform !== undefined) {
+    const overview = data.waveform;
+    const bucketDurationSec = overview.bucketSize / overview.sampleRate;
+    for (let bucket = 0; bucket < overview.minimums.length; bucket += 1) {
+      const timeSec =
+        (bucket + 0.5) * bucketDurationSec - data.alignment.estimatedOffsetSec;
+      if (timeSec < viewport.startSec || timeSec > viewport.endSec) continue;
+      waveform.push({
+        x: timeToX(timeSec, viewport, layout),
+        minimum: overview.minimums[bucket]!,
+        maximum: overview.maximums[bucket]!,
+      });
+    }
+  }
+
   const regions = regionGlyphs(data.target.regions, viewport, layout);
   const hitTargets: HitTarget[] = [
     ...regions.map((region) =>
@@ -284,6 +302,7 @@ export function buildTimelineScene(
     targets,
     detected,
     matches,
+    waveform,
     hitTargets,
   };
 }

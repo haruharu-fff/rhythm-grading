@@ -1,7 +1,7 @@
 import type { AnalysisConfig } from "../domain";
 
 export const DEFAULT_ANALYSIS_CONFIG: AnalysisConfig = {
-  version: "phase-2-baseline-1",
+  version: "phase-5-browser-audio-1",
   presetName: "practice-pad-default",
   onset: {
     highPassHz: 80,
@@ -40,5 +40,9 @@ export const DEFAULT_ANALYSIS_CONFIG: AnalysisConfig = {
     accentNeighborCount: 2,
   },
   roll: { minimumStrokeCount: 2 },
-  quality: { maximumClippingSampleRatio: 0.001 },
+  quality: {
+    maximumClippingSampleRatio: 0.001,
+    minimumInputRmsDbfs: -55,
+    maximumLowConfidenceRate: 0.5,
+  },
 };

@@ -4,6 +4,7 @@ import type {
   TargetPerformance,
   TargetRegion,
 } from "../../domain";
+import type { WaveformOverview } from "../../audio";
 
 export type TimelineDisplayMode = "overlay" | "target" | "actual";
 
@@ -16,6 +17,7 @@ export interface TimelineData {
   target: TargetPerformance;
   detected: DetectedStroke[];
   alignment: StrokeAlignment;
+  waveform?: WaveformOverview;
 }
 
 export interface TimelineBounds {
@@ -88,6 +90,12 @@ export interface MatchGlyph {
   timingErrorSec: number;
 }
 
+export interface WaveformGlyph {
+  x: number;
+  minimum: number;
+  maximum: number;
+}
+
 export interface HitTarget {
   selection: TimelineSelection;
   x: number;
@@ -105,5 +113,6 @@ export interface TimelineScene {
   targets: TargetGlyph[];
   detected: DetectedGlyph[];
   matches: MatchGlyph[];
+  waveform: WaveformGlyph[];
   hitTargets: HitTarget[];
 }
