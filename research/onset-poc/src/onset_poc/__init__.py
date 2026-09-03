@@ -1,8 +1,25 @@
-"""Research-only onset detector boundary.
+"""Reference onset detector and cross-language data boundary."""
 
-The detector itself starts in Phase 4. Phase 0 defines the shared JSON contract only.
-"""
+from onset_poc.config import OnsetDetectorConfig
+from onset_poc.detector import DetectionResult, detect_onsets
+from onset_poc.evaluation import DetectionMetrics, evaluate_detections
+from onset_poc.models import (
+    DatasetManifest,
+    DetectedStroke,
+    GroundTruthDocument,
+    GroundTruthEvent,
+    load_detected_strokes,
+)
 
-from onset_poc.models import DetectedStroke, load_detected_strokes
-
-__all__ = ["DetectedStroke", "load_detected_strokes"]
+__all__ = [
+    "DatasetManifest",
+    "DetectedStroke",
+    "DetectionMetrics",
+    "DetectionResult",
+    "GroundTruthDocument",
+    "GroundTruthEvent",
+    "OnsetDetectorConfig",
+    "detect_onsets",
+    "evaluate_detections",
+    "load_detected_strokes",
+]

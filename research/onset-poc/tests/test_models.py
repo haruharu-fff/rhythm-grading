@@ -1,4 +1,6 @@
-from onset_poc import DetectedStroke, load_detected_strokes
+import pytest
+
+from onset_poc import DetectedStroke, GroundTruthDocument, load_detected_strokes
 
 
 def test_loads_shared_detected_stroke_contract() -> None:
@@ -29,3 +31,19 @@ def test_loads_shared_detected_stroke_contract() -> None:
             flags=(),
         )
     ]
+
+
+def test_validates_ground_truth_time_and_order() -> None:
+    value = {
+        "schemaVersion": "1.0",
+        "audioPath": "fixture.wav",
+        "sampleRate": 1_000,
+        "frameCount": 1_000,
+        "events": [
+            {"id": "later", "sampleIndex": 500, "timeSec": 0.5},
+            {"id": "earlier", "sampleIndex": 250, "timeSec": 0.25},
+        ],
+    }
+
+    with pytest.raises(ValueError, match="ordered"):
+        GroundTruthDocument.from_json(value)

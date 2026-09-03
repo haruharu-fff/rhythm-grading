@@ -1,6 +1,6 @@
 # rhythm-grading
 
-打楽器の譜面を正解イベント列へ変換し、検出済み打点列との対応付け・評価・可視化を行うためのアプリケーションです。現在は仕様書 v0.1 の **Phase 0〜3** を実装しています。
+打楽器の譜面を正解イベント列へ変換し、検出済み打点列との対応付け・評価・可視化を行うためのアプリケーションです。現在は仕様書 v0.1 の **Phase 0〜4** を実装しています。
 
 ## 必要環境
 
@@ -42,17 +42,51 @@ npm run check         # 上記をまとめて実行
 
 コードを整形する場合は `npm run format` を使います。
 
-## Python onset PoC骨格
+## Python onset PoC
 
-Phase 4でオンセット検出を実装するための独立パッケージです。現時点では、TypeScriptと共有する `DetectedStroke` JSON境界のモデルとテストだけを置いています。
+WAVからTypeScriptと共有する `DetectedStroke[]` JSONを生成し、ground truthとの評価、parameter sweep、失敗例の可視化を行う独立パッケージです。
 
 ```bash
 cd research/onset-poc
 poetry install
+poetry run onset-poc --help
 poetry run ruff check .
+poetry run ruff format --check .
 poetry run mypy src
 poetry run pytest
 ```
+
+synthetic fixtureで4つのCLIを実行する例です。出力先は任意に変更できます。
+
+```bash
+mkdir -p work/phase4
+
+poetry run onset-poc detect \
+  ../../fixtures/audio/phase4-synthetic.wav \
+  --config configs/practice-pad-baseline.json \
+  --output work/phase4/detected.json \
+  --plot work/phase4/detect.png
+
+poetry run onset-poc evaluate \
+  work/phase4/detected.json \
+  ../../fixtures/audio/phase4-synthetic-truth.json \
+  --output work/phase4/metrics.json
+
+poetry run onset-poc sweep \
+  ../../fixtures/audio/phase4-synthetic-dataset.json \
+  configs/synthetic-grid.json \
+  --config configs/practice-pad-baseline.json \
+  --output work/phase4/comparison.csv \
+  --report work/phase4/report.md
+
+poetry run onset-poc visualize \
+  ../../fixtures/audio/phase4-synthetic.wav \
+  ../../fixtures/audio/phase4-synthetic-truth.json \
+  --config configs/practice-pad-baseline.json \
+  --output work/phase4/diagnostic.png
+```
+
+`detect` のJSONはwrapperを付けない `DetectedStroke[]` そのもので、Web側へそのまま渡せます。ground truthとdataset manifestの形式は [`docs/fixtures.md`](docs/fixtures.md) を参照してください。
 
 ## 現在の実装範囲
 
@@ -71,6 +105,12 @@ poetry run pytest
 - zoom、scroll、fit、打点・区間selection、miss／extraナビゲーション
 - timing、actual tempo、internal rhythm、dynamics、accent、rollの統計・selection inspector
 - 表示範囲cullingを検証する4,000打fixture
+- WAV読込と時間領域baseline onset detector
+- adaptive local noise floor、candidate peak、backward attack refinement
+- attack strength／stroke energy、relative dB、confidence／quality flag
+- ground truth matchingとprecision／recall／F1／FP/min／timing error
+- `detect`／`evaluate`／`sweep`／`visualize` CLI
+- 条件ラベル別sweep CSV、diagnostic waveform plot、synthetic実験report
 - 共有JSON fixture、unit test、golden test、GitHub Actions CI
 
 主要設定は `apps/web/src/config/default-analysis-config.ts` に集約しています。未校正の閾値やペナルティは製品上の合否基準ではありません。
@@ -78,15 +118,16 @@ poetry run pytest
 ## 今回実装していないもの
 
 - 実マイク入力、AudioWorklet、PCM collector
-- 本格的なオンセット検出とPython研究CLI
+- 実録500打以上のground truth datasetとparameter calibration
+- spectral fluxを併用する検出器、practice-pad／snare製品presetの確定
 - Web Worker/WASM
-- 波形表示（PCM入力がまだないため、Canvasの波形layerはPhase 4以降で接続）
+- Web Canvasの波形表示（Browser PCM入力と合わせてPhase 5で接続）
 - 譜面エディタ、メトロノーム
 - IndexedDB保存
 - E2Eと実録WAV fixture
 - 校正済みDynamics/accent/roll判定、100点換算
 
-次のPhase 4では、Python onset PoCへ実WAVの読み込み、attack検出、評価CLIを追加し、現在の `DetectedStroke[]` JSON境界へ接続します。
+次のPhase 5では、Browser AudioからFloat32 PCMを収集し、Python referenceと同じ設定・I/Oを持つoffline Worker detectorへ接続します。
 
 ## ディレクトリ
 
@@ -99,7 +140,7 @@ apps/web/src/fixtures/     人工演奏generator
 apps/web/src/ui/timeline/  viewport、scene、Canvas描画、操作
 apps/web/src/ui/session/   統計・selection inspector
 fixtures/                  TypeScript/Python共有JSON
-research/onset-poc/        Phase 4向けPythonパッケージ骨格
+research/onset-poc/        Phase 4 Python reference detectorと研究CLI
 docs/adr/                  仕様との差異・設計判断
 ```
 

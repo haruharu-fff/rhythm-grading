@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1.0",
+  "toleranceMs": 25.0,
+  "durationSec": 2.4,
+  "estimatedOffsetSec": 0.0,
+  "counts": {
+    "truth": 7,
+    "detected": 4,
+    "matched": 4,
+    "miss": 3,
+    "extra": 0
+  },
+  "precision": 1.0,
+  "recall": 0.5714285714285714,
+  "f1": 0.7272727272727273,
+  "falsePositivesPerMinute": 0.0,
+  "timing": {
+    "signedMeanSec": 0.0,
+    "offsetAdjustedMaeSec": 0.0,
+    "offsetAdjustedSdSec": 0.0,
+    "offsetAdjustedP95Sec": 0.0
+  },
+  "matches": [
+    {
+      "truthId": "truth-01",
+      "detectedId": "det-0000",
+      "truthTimeSec": 0.55,
+      "detectedTimeSec": 0.55,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    },
+    {
+      "truthId": "truth-04",
+      "detectedId": "det-0001",
+      "truthTimeSec": 1.3,
+      "detectedTimeSec": 1.3,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    },
+    {
+      "truthId": "truth-05",
+      "detectedId": "det-0002",
+      "truthTimeSec": 1.65,
+      "detectedTimeSec": 1.65,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    },
+    {
+      "truthId": "truth-06",
+      "detectedId": "det-0003",
+      "truthTimeSec": 2.0,
+      "detectedTimeSec": 2.0,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    }
+  ],
+  "missedTruthIds": ["truth-00", "truth-02", "truth-03"],
+  "extraDetectedIds": []
+}

@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "1.0",
+  "parameters": {
+    "thresholdOffsetDb": [9, 12, 15],
+    "refinementRiseFraction": [0.08, 0.1]
+  }
+}

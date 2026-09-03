@@ -1,0 +1,79 @@
+[
+  {
+    "id": "det-0000",
+    "sampleIndex": 4000,
+    "timeSec": 0.25,
+    "attackStrengthDbfs": -20.783701132387733,
+    "strokeEnergyDbfs": -24.023938887991974,
+    "relativeAttackDb": -5.119380034400663,
+    "relativeEnergyDb": -5.106517793681917,
+    "confidence": 0.887615406769511,
+    "flags": []
+  },
+  {
+    "id": "det-0001",
+    "sampleIndex": 8800,
+    "timeSec": 0.55,
+    "attackStrengthDbfs": -15.66432109798707,
+    "strokeEnergyDbfs": -18.917421094310058,
+    "relativeAttackDb": 0.0,
+    "relativeEnergyDb": 0.0,
+    "confidence": 0.9135365235689541,
+    "flags": []
+  },
+  {
+    "id": "det-0002",
+    "sampleIndex": 13600,
+    "timeSec": 0.85,
+    "attackStrengthDbfs": -11.994884634293705,
+    "strokeEnergyDbfs": -15.2383367581685,
+    "relativeAttackDb": 3.6694364636933656,
+    "relativeEnergyDb": 3.679084336141557,
+    "confidence": 0.655192660290167,
+    "flags": []
+  },
+  {
+    "id": "det-0003",
+    "sampleIndex": 14163,
+    "timeSec": 0.8851875,
+    "attackStrengthDbfs": -14.39537970528341,
+    "strokeEnergyDbfs": -17.5396670297517,
+    "relativeAttackDb": 1.2689413927036597,
+    "relativeEnergyDb": 1.3777540645583564,
+    "confidence": 0.5122496121442127,
+    "flags": []
+  },
+  {
+    "id": "det-0004",
+    "sampleIndex": 20800,
+    "timeSec": 1.3,
+    "attackStrengthDbfs": -17.25270512337218,
+    "strokeEnergyDbfs": -20.49641164884863,
+    "relativeAttackDb": -1.5883840253851105,
+    "relativeEnergyDb": -1.5789905545385707,
+    "confidence": 0.891686898774795,
+    "flags": []
+  },
+  {
+    "id": "det-0005",
+    "sampleIndex": 26400,
+    "timeSec": 1.65,
+    "attackStrengthDbfs": -13.173365411600951,
+    "strokeEnergyDbfs": -16.42049553084091,
+    "relativeAttackDb": 2.490955686386119,
+    "relativeEnergyDb": 2.496925563469148,
+    "confidence": 0.9232545408329437,
+    "flags": []
+  },
+  {
+    "id": "det-0006",
+    "sampleIndex": 32000,
+    "timeSec": 2.0,
+    "attackStrengthDbfs": -16.16561135955564,
+    "strokeEnergyDbfs": -19.412132752416777,
+    "relativeAttackDb": -0.5012902615685704,
+    "relativeEnergyDb": -0.4947116581067199,
+    "confidence": 0.9084497934591437,
+    "flags": []
+  }
+]

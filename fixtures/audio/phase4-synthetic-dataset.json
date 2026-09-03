@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0",
+  "items": [
+    {
+      "id": "phase4-synthetic",
+      "wavPath": "phase4-synthetic.wav",
+      "truthPath": "phase4-synthetic-truth.json",
+      "labels": {
+        "instrument": "synthetic-practice-pad",
+        "tempoBpm": 120,
+        "pattern": "single-and-close-double"
+      }
+    }
+  ]
+}

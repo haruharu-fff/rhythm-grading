@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "1.0",
+  "toleranceMs": 25.0,
+  "durationSec": 2.4,
+  "estimatedOffsetSec": 0.0,
+  "counts": {
+    "truth": 7,
+    "detected": 7,
+    "matched": 7,
+    "miss": 0,
+    "extra": 0
+  },
+  "precision": 1.0,
+  "recall": 1.0,
+  "f1": 1.0,
+  "falsePositivesPerMinute": 0.0,
+  "timing": {
+    "signedMeanSec": 2.67857142857153e-5,
+    "offsetAdjustedMaeSec": 2.67857142857153e-5,
+    "offsetAdjustedSdSec": 6.561133239598047e-5,
+    "offsetAdjustedP95Sec": 0.00013125000000000484
+  },
+  "matches": [
+    {
+      "truthId": "truth-00",
+      "detectedId": "det-0000",
+      "truthTimeSec": 0.25,
+      "detectedTimeSec": 0.25,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    },
+    {
+      "truthId": "truth-01",
+      "detectedId": "det-0001",
+      "truthTimeSec": 0.55,
+      "detectedTimeSec": 0.55,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    },
+    {
+      "truthId": "truth-02",
+      "detectedId": "det-0002",
+      "truthTimeSec": 0.85,
+      "detectedTimeSec": 0.85,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    },
+    {
+      "truthId": "truth-03",
+      "detectedId": "det-0003",
+      "truthTimeSec": 0.885,
+      "detectedTimeSec": 0.8851875,
+      "rawErrorSec": 0.0001875000000000071,
+      "offsetAdjustedErrorSec": 0.0001875000000000071
+    },
+    {
+      "truthId": "truth-04",
+      "detectedId": "det-0004",
+      "truthTimeSec": 1.3,
+      "detectedTimeSec": 1.3,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    },
+    {
+      "truthId": "truth-05",
+      "detectedId": "det-0005",
+      "truthTimeSec": 1.65,
+      "detectedTimeSec": 1.65,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    },
+    {
+      "truthId": "truth-06",
+      "detectedId": "det-0006",
+      "truthTimeSec": 2.0,
+      "detectedTimeSec": 2.0,
+      "rawErrorSec": 0.0,
+      "offsetAdjustedErrorSec": 0.0
+    }
+  ],
+  "missedTruthIds": [],
+  "extraDetectedIds": []
+}

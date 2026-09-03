@@ -404,6 +404,7 @@ export interface OnsetDetectorConfig {
   refinementRiseFraction: number;
   attackWindowMs: number;
   energyWindowMs: number;
+  nearClippingThresholdDbfs: number;
   useSpectralFlux: boolean;
   spectralFluxWeight: number;
   confidenceThreshold: number;
