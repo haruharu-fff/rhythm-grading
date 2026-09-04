@@ -77,8 +77,8 @@ function drawGrid(
   context.fillStyle = COLORS.muted;
   context.font = "600 10px Inter, system-ui, sans-serif";
   context.textAlign = "right";
-  context.fillText("TARGET", layout.plotLeft - 10, layout.targetY + 4);
-  context.fillText("ACTUAL", layout.plotLeft - 10, layout.detectedY + 4);
+  context.fillText("目標", layout.plotLeft - 10, layout.targetY + 4);
+  context.fillText("実際", layout.plotLeft - 10, layout.detectedY + 4);
 }
 
 function drawRegions(
@@ -112,7 +112,7 @@ function drawRegions(
       context.font = "600 10px Inter, system-ui, sans-serif";
       context.textAlign = "left";
       context.fillText(
-        glyph.region.mode === "measured" ? "MEASURED ROLL" : "UNMEASURED ROLL",
+        glyph.region.mode === "measured" ? "計測ロール" : "非計測ロール",
         glyph.xStart + 6,
         glyph.y + 14,
       );
@@ -136,7 +136,7 @@ function drawRegions(
       context.font = "600 10px Inter, system-ui, sans-serif";
       context.textAlign = "left";
       context.fillText(
-        rising ? "CRESC." : "DECRESC.",
+        rising ? "クレッシェンド" : "デクレッシェンド",
         glyph.xStart + 6,
         glyph.y + 14,
       );
@@ -228,7 +228,7 @@ function drawTargets(
       context.stroke();
       context.fillStyle = COLORS.miss;
       context.font = "700 9px Inter, system-ui, sans-serif";
-      context.fillText("MISS", stroke.x, stroke.y + 23);
+      context.fillText("ミス", stroke.x, stroke.y + 23);
     }
   }
 }
@@ -258,7 +258,7 @@ function drawDetected(
       context.fillStyle = COLORS.extra;
       drawDiamond(context, stroke.x, stroke.y, 8);
       context.font = "700 9px Inter, system-ui, sans-serif";
-      context.fillText("EXTRA", stroke.x, stroke.y + 23);
+      context.fillText("余分", stroke.x, stroke.y + 23);
       continue;
     }
     context.fillStyle =

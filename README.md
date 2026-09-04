@@ -18,14 +18,14 @@ npm ci
 npm run dev
 ```
 
-開発サーバーが表示するlocalhost URLをデスクトップ版ChromeまたはEdgeで開いてください。Golden exerciseと4,000打のdense fixtureを切り替えてタイムラインを操作でき、`Enable microphone` から録音すると停止後にWeb Workerで解析して結果を同じ画面へ表示します。マイク権限要求前に用途を説明し、音声は外部へ送信しません。クリックを使う場合はヘッドホンを使用してください。
+開発サーバーが表示するlocalhost URLをデスクトップ版ChromeまたはEdgeで開いてください。「採点機能デモ」と「高密度表示テスト（4,000打）」を切り替えてタイムラインを操作でき、`マイクを有効にする` から録音すると停止後にWeb Workerで解析して結果を同じ画面へ表示します。どちらも動作確認用のデモ譜面で、譜面のテンポと変更位置は画面上部に表示されます。マイク権限要求前に用途を説明し、音声は外部へ送信しません。クリックを使う場合はヘッドホンを使用してください。
 
 ### ブラウザ録音
 
-1. `Enable microphone` を押し、ブラウザの権限ダイアログを許可します。
-2. 表示されたsample rate、channel count、AGC等の実適用値を確認します。
-3. `Start recording` を押して譜面を演奏します。
-4. `Stop & analyze` を押すと、PCM収録を終了してstream／AudioWorkletを解放し、Worker解析後にTimelineと統計を更新します。
+1. `マイクを有効にする` を押し、ブラウザの権限ダイアログを許可します。
+2. 表示されたサンプルレート、チャンネル数、AGC等の実適用値を確認します。
+3. `録音開始` を押して譜面を演奏します。
+4. `停止して解析` を押すと、PCM収録を終了してstream／AudioWorkletを解放し、Worker解析後にタイムラインと統計を更新します。
 
 マイクはsecure contextでのみ利用できるため、開発時はViteのlocalhostを使用してください。DynamicsはAGC／noise suppression／echo cancellationをブラウザが無効にできなかった場合、またはclipping等を検出した場合に参考値となり、理由を画面へ表示します。
 

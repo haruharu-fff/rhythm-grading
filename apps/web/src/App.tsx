@@ -5,6 +5,7 @@ import {
 } from "./fixtures/demo-scenarios";
 import { StatisticsPanel } from "./ui/session/StatisticsPanel";
 import { RecorderPanel } from "./ui/session/RecorderPanel";
+import { summarizeTempoMap } from "./ui/session/tempo-summary";
 import type { RecordingAnalysis } from "./session";
 import { TimelineCanvas, type TimelineSelection } from "./ui/timeline";
 import "./styles.css";
@@ -43,6 +44,7 @@ export function App() {
     [recordedAnalysis, scenario.data],
   );
   const evaluation = recordedAnalysis?.result ?? scenario.evaluation;
+  const tempo = summarizeTempoMap(scenario.data.target.tempoMap);
 
   const changeScenario = (next: ScenarioId): void => {
     setScenarioId(next);
@@ -58,21 +60,34 @@ export function App() {
             <span className="brand-mark" aria-hidden="true">
               RG
             </span>
-            <p className="eyebrow">Rhythm grading · Phase 5</p>
+            <p className="eyebrow">リズム採点 · Phase 5</p>
           </div>
           <h1>{scenario.title}</h1>
           <p className="app-description">{scenario.description}</p>
+          <dl className="score-facts" aria-label="譜面情報">
+            <div>
+              <dt>譜面</dt>
+              <dd>動作確認用デモ</dd>
+            </div>
+            <div>
+              <dt>テンポ</dt>
+              <dd>
+                <strong>{tempo.bpm}</strong>
+                <small>{tempo.changes}</small>
+              </dd>
+            </div>
+          </dl>
         </div>
         <label className="fixture-picker">
-          <span>Preview fixture</span>
+          <span>デモ譜面</span>
           <select
             value={scenarioId}
             onChange={(event) =>
               changeScenario(event.target.value as ScenarioId)
             }
           >
-            <option value="golden">Golden exercise</option>
-            <option value="dense">Dense · 4,000 strokes</option>
+            <option value="golden">採点機能デモ</option>
+            <option value="dense">高密度表示テスト · 4,000打</option>
           </select>
         </label>
       </header>
@@ -83,33 +98,33 @@ export function App() {
         onAnalysis={acceptRecordedAnalysis}
       />
 
-      <section className="session-strip" aria-label="Session summary">
+      <section className="session-strip" aria-label="演奏結果の概要">
         <div>
-          <span>Target</span>
+          <span>目標打点</span>
           <strong>{data.target.strokes.length.toLocaleString()}</strong>
         </div>
         <div>
-          <span>Detected</span>
+          <span>検出打点</span>
           <strong>{data.detected.length.toLocaleString()}</strong>
         </div>
         <div>
-          <span>Matched</span>
+          <span>一致</span>
           <strong>{data.alignment.matches.length.toLocaleString()}</strong>
         </div>
         <div className="session-miss">
-          <span>Miss</span>
+          <span>ミス</span>
           <strong>{data.alignment.misses.length}</strong>
         </div>
         <div className="session-extra">
-          <span>Extra</span>
+          <span>余分</span>
           <strong>{data.alignment.extras.length}</strong>
         </div>
         <div>
-          <span>Analysis</span>
+          <span>解析データ</span>
           <strong className="analysis-ready">
             {recordedAnalysis === null
-              ? "Synthetic · ready"
-              : "Microphone · analyzed"}
+              ? "人工データ · 準備完了"
+              : "マイク録音 · 解析済み"}
           </strong>
         </div>
       </section>

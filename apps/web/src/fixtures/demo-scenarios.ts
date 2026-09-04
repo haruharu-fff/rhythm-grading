@@ -50,9 +50,9 @@ export function createGoldenDemoScenario(): DemoScenario {
   );
   return {
     id: "golden",
-    title: validation.value.title,
+    title: "計測／非計測ロールの採点デモ",
     description:
-      "Tempo change, measured/unmeasured rolls, crescendo, one miss, and one extra.",
+      "テンポ変更、計測／非計測ロール、クレッシェンド、ミスと余分な打点を含む動作確認用の譜面です。",
     data: { target, detected, alignment },
     evaluation,
   };
@@ -63,7 +63,7 @@ export function createDenseDemoScenario(strokeCount = 4_000): DemoScenario {
   const score: ScoreDocument = {
     schemaVersion: "1.0",
     id: `dense-${strokeCount}`,
-    title: `${strokeCount.toLocaleString()}-stroke rendering fixture`,
+    title: `${strokeCount.toLocaleString()}打の描画テスト`,
     createdAt: timestamp,
     updatedAt: timestamp,
     lengthBeats: { numerator: strokeCount + 6, denominator: 6 },
@@ -175,7 +175,7 @@ export function createDenseDemoScenario(strokeCount = 4_000): DemoScenario {
     id: "dense",
     title: score.title,
     description:
-      "A UI-only 24-division stress fixture; matching is pre-aligned to avoid testing O(N²) DP here.",
+      "24分割の打点を大量表示するUI負荷テスト用の譜面です。DP Matcherの負荷を避けるため、対応関係は事前に計算しています。",
     data: { target, detected, alignment },
     evaluation,
   };
